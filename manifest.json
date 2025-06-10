@@ -1,0 +1,35 @@
+{
+  "name": "Obsidian Bookmark Plus",
+  "description": "Bookmark the current tab into Obsidian.",
+  "homepage_url": "https://github.com/christiet/obsidian-bookmark-plus",
+  "version": "1.0.1",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "page_action": {
+    "default_icon": {
+      "32": "assets/ico.svg"
+    },
+    "default_title": "Bookmark page (Obsidian)",
+    "default_popup": "src/popup/popup.html",
+    "show_matches": [
+      "<all_urls>"
+    ]
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "32": "assets/ico_32.png",
+    "16": "assets/ico_16.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "obsidian-bookmark-plus@christiet"
+    }
+  }
+}

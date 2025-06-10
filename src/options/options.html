@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="options.css" />
+	</head>
+
+	<body>
+		<form id="obp_options">
+			<h1>Fill out the following settings</h1>
+			<label for="obp_vault">Vault name</label>
+
+			<input
+				type="text"
+				placeholder="Obsidian Vault"
+				id="obp_vault"
+			/>
+
+			<label for="obp_paths"
+				>Document Paths (one per line, first is default)</label
+			>
+
+			<textarea
+				id="obp_paths"
+				placeholder="Bookmarks"
+				rows="4"
+			></textarea>
+
+			<label for="obp_template">Bookmark Template</label>
+
+			<textarea
+				id="obp_template"
+				placeholder="Template"
+				rows="4"
+			></textarea>
+			<button type="submit">Save</button>
+		</form>
+		<div id="message"></div>
+
+		<script type="module" src="options.js"></script>
+	</body>
+</html>

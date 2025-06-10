@@ -1,0 +1,16 @@
+{
+  "name": "obsidian_bookmark_plus",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "web-ext build",
+    "dev": "web-ext run -v"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "web-ext": "^7.6.1"
+  }
+}

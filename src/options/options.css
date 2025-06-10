@@ -1,0 +1,105 @@
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 40px 20px;
+	background: #f8fafc;
+	color: #334155;
+	line-height: 1.5;
+}
+
+#obp_options {
+	background: white;
+	padding: 32px;
+	border-radius: 12px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: stretch;
+	animation: fadeIn 0.3s ease-out;
+}
+
+h1 {
+	margin: 0 0 32px 0;
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+	color: #1e293b;
+}
+
+label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 600;
+	font-size: 14px;
+	color: #475569;
+}
+
+input[type="text"],
+textarea {
+	width: 100%;
+	padding: 12px 16px;
+	border: 1px solid #d1d5db;
+	border-radius: 8px;
+	font-size: 13px;
+	font-family: inherit;
+	box-sizing: border-box;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+	outline: none;
+	border-color: #7c3aed;
+	box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+textarea {
+	min-height: 120px;
+	resize: vertical;
+	font-family: "Monaco", "Menlo", "Consolas", monospace;
+	line-height: 1.4;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+	color: #9ca3af;
+	font-style: italic;
+}
+
+button[type="submit"] {
+	width: 100%;
+	padding: 10px;
+	background: #7c3aed;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	margin-top: 8px;
+	transition: all 0.2s ease;
+}
+
+button[type="submit"]:hover {
+	background: #6d28d9;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+button[type="submit"]:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
