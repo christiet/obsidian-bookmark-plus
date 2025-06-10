@@ -9,35 +9,28 @@
 		<form id="obp_options">
 			<h1>Fill out the following settings</h1>
 			<label for="obp_vault">Vault name</label>
-
-			<input
-				type="text"
-				placeholder="Obsidian Vault"
-				id="obp_vault"
-			/>
+			<input type="text" placeholder="Obsidian Vault" id="obp_vault" />
 
 			<label for="obp_paths"
 				>Document Paths (one per line, first is default)</label
 			>
-
-			<textarea
-				id="obp_paths"
-				placeholder="Bookmarks"
-				rows="4"
-			></textarea>
+			<textarea id="obp_paths" placeholder="Bookmarks" rows="4"></textarea>
 
 			<label for="obp_template">Bookmark Template</label>
+			<textarea id="obp_template" placeholder="Template" rows="4"></textarea>
 
-			<textarea
-				id="obp_template"
-				placeholder="Template"
-				rows="4"
-			></textarea>
-			<button type="submit">Save</button>
+			<div class="debug-section">
+				<label for="obp_debug">Enable debug logging</label>
+				<label class="toggle">
+					<input type="checkbox" id="obp_debug" />
+					<span class="slider"></span>
+				</label>
+			</div>
 		</form>
 		<div id="message"></div>
 
-		<script type="module" src="options.js"></script>
-		<script src="assets/browser-polyfill.min.js"></script>		
+		<script src="/assets/browser-polyfill.min.js"></script>
+		<script src="/src/shared/utils.js"></script>
+		<script src="options.js"></script>
 	</body>
 </html>
