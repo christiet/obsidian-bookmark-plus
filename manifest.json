@@ -2,7 +2,7 @@
   "name": "Obsidian Bookmark Plus",
   "description": "Bookmark the current tab into Obsidian.",
   "homepage_url": "https://github.com/christiet/obsidian-bookmark-plus",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifest_version": 3,
   "permissions": [
     "storage",
@@ -11,7 +11,7 @@
   ],
   "page_action": {
     "default_icon": {
-      "32": "assets/ico.svg"
+      "32": "assets/icons/ico.svg"
     },
     "default_title": "Bookmark page (Obsidian)",
     "default_popup": "src/popup/popup.html",
