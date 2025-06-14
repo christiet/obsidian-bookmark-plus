@@ -7,7 +7,7 @@ build_browser() {
     echo "Building $browser extension..."
     mkdir -p ./dist/$browser
     cp manifest-$browser.json manifest.json
-    npx web-ext build --ignore-files ./images ./manifest-*.json --artifacts-dir=./dist/$browser --overwrite-dest
+    npx web-ext build --ignore-files ./images ./manifest-*.json ./build.sh --artifacts-dir=./dist/$browser --overwrite-dest
     echo "$browser extension built"
 }
 
