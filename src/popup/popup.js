@@ -122,25 +122,26 @@ window.addEventListener("DOMContentLoaded", async () => {
 	let description = "";
 	document.querySelector("#description").placeholder = "Loading...";
 
-	debug("Fetching page content for description...");
-	await fetch(url)
-		.then((response) => response.text())
-		.then((html_string) => {
-			let parser = new DOMParser();
-			let doc = parser.parseFromString(html_string, "text/html");
-			let metaDescription = doc.querySelector('meta[name="description"]');
-			if (metaDescription) {
-				description = metaDescription.getAttribute("content");
-				debug("Found meta description:", description);
-			} else {
-				description = "";
-				debug("No meta description found");
-			}
-		})
-		.catch((err) => {
-			description = "";
-			console.log("Failed to fetch page content:", err);
-		});
+	debug("Getting metadata from content script...");
+	try {
+		// Send message to content script to get metadata
+		const response = await browser.tabs.sendMessage(
+			(
+				await browser.tabs.query({ currentWindow: true, active: true })
+			)[0].id,
+			{ action: "getMetadata" }
+		);
+
+		if (response && response.description) {
+			description = response.description;
+			debug("Got description from content script:", description);
+		} else {
+			debug("No description received from content script");
+		}
+	} catch (error) {
+		console.error("Failed to get metadata from content script:", error);
+		description = "";
+	}
 
 	document.querySelector("#description").placeholder = "No description...";
 	document.querySelector("#description").value = description;
