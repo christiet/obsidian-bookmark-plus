@@ -9,12 +9,15 @@
     "activeTab",
     "tabs"
   ],
-  "action": {
+  "page_action": {
     "default_icon": {
       "32": "assets/icons/ico_32.png"
     },
     "default_title": "Bookmark page (Obsidian)",
-    "default_popup": "src/popup/popup.html"
+    "default_popup": "src/popup/popup.html",
+    "show_matches": [
+      "<all_urls>"
+    ]
   },
   "options_ui": {
     "page": "src/options/options.html",
@@ -23,6 +26,11 @@
   "icons": {
     "32": "assets/icons/ico_32.png",
     "16": "assets/icons/ico_16.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "obsidian-bookmark-plus@christiet"
+    }
   },
   "background": {
     "scripts": [

@@ -52,7 +52,9 @@ If you don't get a link added, check the following:
 
 
 ## ⌨️ Build
-> `web-ext build --ignore-files ./images`
+I was too lazy to install npm so there's a simple build script that builds the plugins for Firefox and Chrome.
+> ./build.sh
+
 
 ## ❤ Credits
 
