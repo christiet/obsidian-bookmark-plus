@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Bookmark Plus - Demo Article</title>
+
+    <!-- Standard Meta Tags -->
+    <meta name="description"
+        content="A simple browser extension that creates rich bookmarks from web pages directly into your Obsidian vault with metadata extraction and custom templates.">
+    <meta name="keywords" content="obsidian, bookmarking, browser extension, note taking, web clipping, metadata">
+    <meta name="author" content="Tony Christie">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Obsidian Bookmark Plus Demo Page">
+    <meta property="og:description"
+        content="A simple browser extension that creates rich bookmarks from web pages directly into your Obsidian vault with metadata extraction and custom templates.">
+    <meta property="og:image" content="https://sevenbrooms.com/obp/preview.jpg">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Obsidian Bookmark Plus">
+    <meta property="og:url" content="https://christiet.github.io/obsidian-bookmark-plus/demo">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://sevenbrooms.com/obp/ico_16.png">
+    <link rel="canonical" href="https://christiet.github.io/obsidian-bookmark-plus/demo">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .article {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #663BF1, #8B5CF6);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        h1 {
+            color: #1a202c;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        .lead {
+            font-size: 1.2em;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #663BF1;
+        }
+
+        .feature h3 {
+            color: #663BF1;
+            margin-bottom: 10px;
+        }
+
+        .cta {
+            background: linear-gradient(135deg, #663BF1, #8B5CF6);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta h2 {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: white;
+            color: #663BF1;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <article class="article">
+        <header class="header">
+            <div class="icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M19 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                </svg>
+            </div>
+            <h1>Obsidian Bookmark Plus Demo Page</h1>
+            <div class="meta">
+                By <strong>Tony Christie</strong> • Demo Article • 2 min read
+            </div>
+        </header>
+
+        <div class="lead">
+            A simple browser extension that creates rich bookmarks from web pages directly into your Obsidian vault with
+            metadata extraction and custom templates.
+        </div>
+
+        <p>This extension makes bookmarking websites into Obsidian more useful by automatically extracting metadata like
+            titles, descriptions, authors, and images. Instead of just saving a URL, you get a properly formatted note
+            with all the context you need.</p>
+
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>📋 Metadata Extraction</h3>
+                <p>Gets titles, descriptions, authors, favicons, and Open Graph data from web pages.</p>
+            </div>
+
+            <div class="feature">
+                <h3>🎨 Custom Templates</h3>
+                <p>Format bookmarks however you want - simple text, rich layouts, or anything in between.</p>
+            </div>
+
+            <div class="feature">
+                <h3>🌐 Cross-Browser</h3>
+                <p>Works on Firefox, Chrome, Edge, and other Chromium browsers.</p>
+            </div>
+
+            <div class="feature">
+                <h3>📁 Multiple Paths</h3>
+                <p>Organize bookmarks into different document paths in your vault.</p>
+            </div>
+        </div>
+
+        <h2>How It Works</h2>
+        <p>Click the extension icon on any webpage, and it extracts the available metadata. You can then choose which
+            document path to save it to and customize the title, description, or tags before adding it to your Obsidian
+            vault.</p>
+
+        <p>The extension uses templates to format the bookmark, so you can create anything from a simple link to a rich
+            card with images and structured information.</p>
+
+        <div class="cta">
+            <h2>Try It Out</h2>
+            <p>This page has metadata for testing the extension.</p>
+            <a href="https://github.com/christiet/obsidian-bookmark-plus" class="btn">View on GitHub</a>
+        </div>
+    </article>
+</body>
+
+</html>

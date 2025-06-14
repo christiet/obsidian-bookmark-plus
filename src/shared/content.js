@@ -7,23 +7,73 @@ async function getPageMetadata() {
     const metadata = {
         title: document.title,
         url: window.location.href,
-        description: ""
+        description: "",
+        keywords: "",
+        author: "",
+        "og:title": "",
+        "og:description": "", 
+        "og:image": "",
+        "og:site_name": "",
+        "og:type": "",
+        favicon: "",
+        canonical: ""
     };
 
-    // Get meta description
+    // Basic meta tags
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
         metadata.description = metaDescription.getAttribute("content") || "";
-        debug("Content script: Found meta description:", metadata.description);
-    } else {
-        debug("Content script: No meta description found");
     }
 
-    // Could add more metadata here in future:
-    // - favicon: document.querySelector('link[rel="icon"]')?.href
-    // - og:image: document.querySelector('meta[property="og:image"]')?.content
-    // - keywords: document.querySelector('meta[name="keywords"]')?.content
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+        metadata.keywords = metaKeywords.getAttribute("content") || "";
+    }
 
+    const metaAuthor = document.querySelector('meta[name="author"]');
+    if (metaAuthor) {
+        metadata.author = metaAuthor.getAttribute("content") || "";
+    }
+
+    // Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+        metadata["og:title"] = ogTitle.getAttribute("content") || "";
+    }
+
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) {
+        metadata["og:description"] = ogDescription.getAttribute("content") || "";
+    }
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) {
+        metadata["og:image"] = ogImage.getAttribute("content") || "";
+    }
+
+    const ogSiteName = document.querySelector('meta[property="og:site_name"]');
+    if (ogSiteName) {
+        metadata["og:site_name"] = ogSiteName.getAttribute("content") || "";
+    }
+
+    const ogType = document.querySelector('meta[property="og:type"]');
+    if (ogType) {
+        metadata["og:type"] = ogType.getAttribute("content") || "";
+    }
+
+    // Favicon
+    const favicon = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
+    if (favicon) {
+        metadata.favicon = favicon.getAttribute("href") || "";
+    }
+
+    // Canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+        metadata.canonical = canonical.getAttribute("href") || "";
+    }
+
+    debug("Content script: Extracted metadata:", metadata);
     return metadata;
 }
 
