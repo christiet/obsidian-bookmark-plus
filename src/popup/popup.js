@@ -1,4 +1,4 @@
-async function clipPage(url, title, tags, description, vaultPath) {
+async function clipPage(url, title, tags, description, vaultPath, metadata) {
 	debug("clipPage called with:", {
 		url,
 		title,
@@ -35,6 +35,20 @@ async function clipPage(url, title, tags, description, vaultPath) {
 		.replace("{description}", description)
 		.replace("{tags}", tags)
 		.replace(/\\n/g, "\n");
+
+	// Add new metadata fields with fallbacks
+	if (metadata) {
+		str = str
+			.replace("{keywords}", metadata.keywords || "")
+			.replace("{author}", metadata.author || "")
+			.replace("{og:title}", metadata["og:title"] || metadata.title || "")
+			.replace("{og:description}", metadata["og:description"] || metadata.description || "")
+			.replace("{og:image}", metadata["og:image"] || "")
+			.replace("{og:site_name}", metadata["og:site_name"] || "")
+			.replace("{og:type}", metadata["og:type"] || "")
+			.replace("{favicon}", metadata.favicon || "")
+			.replace("{canonical}", metadata.canonical || "");
+	}
 	debug("Processed bookmark string:", str);
 
 	let newStr = encodeURIComponent(str);
@@ -120,23 +134,23 @@ window.addEventListener("DOMContentLoaded", async () => {
 		}, console.error);
 
 	let description = "";
+	let metadata = null;
 	document.querySelector("#description").placeholder = "Loading...";
 
 	debug("Getting metadata from content script...");
 	try {
 		// Send message to content script to get metadata
 		const response = await browser.tabs.sendMessage(
-			(
-				await browser.tabs.query({ currentWindow: true, active: true })
-			)[0].id,
+			(await browser.tabs.query({ currentWindow: true, active: true }))[0].id,
 			{ action: "getMetadata" }
 		);
-
-		if (response && response.description) {
-			description = response.description;
-			debug("Got description from content script:", description);
+		
+		if (response) {
+			metadata = response;
+			description = response.description || "";
+			debug("Got metadata from content script:", metadata);
 		} else {
-			debug("No description received from content script");
+			debug("No metadata received from content script");
 		}
 	} catch (error) {
 		console.error("Failed to get metadata from content script:", error);
@@ -177,7 +191,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 		debug("Form values:", { tags, title, desc, selectedPath });
 
-		clipPage(url, title, tags, desc, selectedPath);
+		clipPage(url, title, tags, desc, selectedPath, metadata);
 	}
 
 	document

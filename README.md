@@ -1,67 +1,184 @@
-<img src="https://raw.githubusercontent.com/christiet/obsidian-bookmark-plus/main/images/preview.jpg" alt="Preview">
+# <img src="assets/icons/ico.svg" width="32" height="32" style="vertical-align: middle;"> Obsidian Bookmark Plus
+#### Enhanced browser extension that creates rich bookmarks from any webpage directly into your Obsidian vault.
 
-# ⚡ Bookmark tab into Obsidian.
-#### This extension adds a button to the address bar that allows users to create a "Bookmark" of their current tab into a specified document in Obsidian.
-
-##### Fetches the Website Description if one is provided in the Head of HTML.
-
-# 📃 Bookmark Example
-> ## Kavita #self-hosted
-> - *Lighting fast with a slick design, Kavita is a rocket fueled self-hosted digital library which supports a vast array of file formats. Install to start reading and share your server with your friends. book reader, self hosted, manga, comics, free, manhwa, e readers, electronic book readers, digital book reader, cartoon*
-> - https://www.kavitareader.com/
+**Cross-browser support:** Firefox, Chrome, Edge, and other Chromium-based browsers.
 
 ## 📖 How to use 
 
-1. Install the following Obsidian plugin:
-   1. [**Obsidian Advanced URI**](https://github.com/Vinzent03/obsidian-advanced-uri)
+### Prerequisites
+1. Install the [**Obsidian Advanced URI**](https://github.com/Vinzent03/obsidian-advanced-uri) plugin in Obsidian
 
-2. Install the Extension from the browser extension store
+### Installation
+2. Install the extension:
+   - **Firefox**: [Firefox Add-ons Store](https://addons.mozilla.org/firefox/addon/obsidian-bookmark-plus/)
+   - **Chrome/Edge**: [Chrome Web Store](https://chrome.google.com/webstore/detail/obsidian-bookmark-plus)
 
-3. Open **Add-ons Manager** or **Extensions** and click on "**Obsidian Bookmarks Plus**"
-4. Click on Options in the menu
-   * Fill out the **Vault name** - e.g. Obsidian Vault
-   * Add values to **Document Path**. - you can have multiple paths, seperated by a return. Example paths could be Clippings/Bookmarks or Technology/Links
-   _note that the target location must exist before you trying to use it_
-5. Optionally add a template for the link format. This is basic markdown and the available options are:
-   * title, description, tags, url
-   * Example templates:
-   ```
-   default:
-   ## {title} {tags}\n- *{description}*\n- {url}
-   
-   notion importer format:
-   \n> [!info] {title} {tags}\n> {description}\n> {url}\n>
-   ```
-   BE WARNED:  There is no validation of templates, so don't do anything you don't understand!
-6. Go on a **Website** you want to bookmark and click on the **Bookmark button** in the **Address bar**.
+### Setup
+3. Click the extension icon and select "Options" (or go to browser extensions page)
+4. Configure your settings:
+   - **Vault name**: Your Obsidian vault name (e.g., "Obsidian Vault")
+   - **Document Paths**: One path per line, first path is default. Bookmarks are appended to these files (created if they don't exist)
+     ```
+     Bookmarks
+     Research/Articles
+     Projects/Web Clippings
+     ```
+   - **Template**: Customize how bookmarks appear (see examples below)
 
-## Troubleshooting
-If you don't get a link added, check the following:
-1. Obsidian links are allowed - sometimes the popup for allowing links to be opened in Obsidian is hidden.
-2. Check the path of your links file is correct. 
+⚠️ **Template Warning**: Templates support raw HTML and are inserted directly into your Obsidian notes. Only use templates from trusted sources and avoid complex HTML if you're not familiar with it.
 
-## 🍀 Supporters
+### Usage
+5. Navigate to any webpage you want to bookmark
+6. Click the Obsidian Bookmark Plus icon in your address bar
+7. Adjust title, tags, or description if needed
+8. Select document path and click "Add Bookmark"
 
-**[!["Buy Patrik A Ramen"](https://raw.githubusercontent.com/patrikzudel/patrikzudel/main/ramen.png)](https://www.buymeacoffee.com/patrikzero)**
+## 🏷️ Template Variables
 
-> If you like this project and would like to support it, feel free to buy Patrik a ramen! 🍜🍜🍜 It was his original plug-in that gave me the launchpad for this one.
+### Basic Variables
+- `{title}` - Page title
+- `{url}` - Page URL  
+- `{description}` - Meta description
+- `{tags}` - Your custom tags
+- `{keywords}` - Meta keywords
+- `{author}` - Page author
+- `{canonical}` - Canonical URL
 
-> Or **Paypal:**
+### Open Graph Variables (with fallbacks)
+- `{og:title}` - Social media title (fallback: `{title}`)
+- `{og:description}` - Social media description (fallback: `{description}`)
+- `{og:image}` - Featured image URL
+- `{og:site_name}` - Website/publication name
+- `{og:type}` - Content type (article, website, etc.)
 
-**[!["Buy Patrik A Ramen"](https://raw.githubusercontent.com/patrikzudel/patrikzudel/main/ramenpaypal.png)](https://ko-fi.com/patrikzudel)**
+### Visual Elements
+- `{favicon}` - Site favicon URL
 
+## 📋 Template Examples
 
-## ⌨️ Build
-I was too lazy to install npm so there's a simple build script that builds the plugins for Firefox and Chrome.
-> ./build.sh
+### Simple Text Bookmark
+```
+[{title}]({url}) - {description}
+```
 
+### Rich Article Bookmark
+![Rich Article Bookmark](images/rich_article_bookmark.png)
+```
+> [!info] {og:title}
+> **{og:site_name}** | *{author}*
+> {og:description}
+> 📄 [{title}]({url})
+```
 
-## ❤ Credits
+### Visual Bookmark with Favicon
+![Visual Bookmark with Favicon](images/visual_bookmark_with_favicon.png)
+```
+![favicon|16]({favicon}) [{title}]({url})
+{description}
+```
 
-- [ObsidianClip](https://github.com/ClarkAllen1556/obsidian_clip/tree/main) (Obsidian Clip by ClarkAllen1556)
-- [Bookmarks-For-Obsidian](https://github.com/abhn/Bookmarks-For-Obsidian/tree/main) (Bookmarks-For-Obsidian by abhn)
-- [PhosphorIcons](https://phosphoricons.com/) (Original logo and icon)
-- [Patrik Žúdel](https://github.com/patrikzudel/firefox-obsidian-bookmark) - the original plugin that this is based on.
+### Rich Visual Layout (Light Theme)
+![Rich Visual Layout Light](images/rich_visual_layout_light.png)
+```html
+<div style="display: flex; align-items: flex-start; gap: 8px;">
+  <img src="{og:image}" style="width: 100px; object-fit: cover; border-radius: 4px;" />
+  <div>
+    <img src="{favicon}" width="16" height="16" style="vertical-align: middle;" /> 
+    <strong><a href="{url}">{title}</a></strong><br>
+    {description}<br>
+    <span style="display: inline-block; background: #f0f0f8; color: #7c3aed; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; margin-top: 4px;">{tags}</span>
+  </div>
+</div>
+```
+
+### Rich Visual Layout (Dark Theme)
+![Rich Visual Layout Dark](images/rich_visual_layout_dark.png)
+```html
+<div style="display: flex; align-items: flex-start; gap: 8px;">
+  <img src="{og:image}" style="width: 100px; object-fit: cover; border-radius: 4px;" />
+  <div>
+    <img src="{favicon}" width="16" height="16" style="vertical-align: middle;" /> 
+    <strong><a href="{url}">{title}</a></strong><br>
+    {description}<br>
+    <span style="display: inline-block; background: #2b2d42; color: #8b9dc3; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; margin-top: 4px;">{tags}</span>
+  </div>
+</div>
+
+```
+
+### Notion-Style Import
+![Notion Import Style](images/notion_import_style.png)
+```
+> [!info] {title} {tags}
+> {description}
+> {url}
+```
+
+### Research Format
+```
+## {og:title}
+**Source**: {og:site_name}  
+**Author**: {author}  
+**Type**: {og:type}  
+**URL**: {canonical}
+
+{og:description}
+
+**Keywords**: {keywords}
+```
+
+## 🛠️ Build from Source
+
+### Requirements
+- Bash shell
+- Node.js (for `npx web-ext`)
+
+### Building
+```bash
+# Clone repository
+git clone https://github.com/christiet/obsidian-bookmark-plus.git
+cd obsidian-bookmark-plus
+
+# Make build script executable
+chmod +x build.sh
+
+# Build for both browsers (default)
+./build.sh
+
+# Or build for specific browser
+./build.sh firefox
+./build.sh chrome
+
+# Clean build artifacts
+./build.sh clean
+```
+
+Built extensions will be in `dist/firefox/` and `dist/chrome/` directories.
+
+## 🐛 Troubleshooting
+
+### No bookmark created
+1. **Check Obsidian Advanced URI**: Ensure the plugin is installed and enabled
+2. **Allow external links**: Obsidian may ask permission to open links from browser
+3. **Verify paths**: Document paths must exist in your vault before use
+4. **Check vault name**: Must match exactly (case-sensitive)
+
+### Missing metadata
+- Some sites don't provide all metadata types
+- MediaWiki sites (Wikipedia, etc.) use non-standard meta tags
+- Metadata extraction works best on modern news sites, blogs, and e-commerce
+
+### Template not working
+- Check template syntax carefully
+- Use `\n` for line breaks in templates
+- Test with default template first, then customize
+
+## 💻 Credits
+
+- [Obsidian Advanced URI](https://github.com/Vinzent03/obsidian-advanced-uri) - Essential companion plugin
+- [Patrik Žúdel](https://github.com/patrikzudel/firefox-obsidian-bookmark) - Original inspiration
+- [PhosphorIcons](https://phosphoricons.com/) - Icon design
+
 ---
 
-💻 by [Tony Christie](https://github.com/christiet)
+🚀 **Enhanced by [Tony Christie](https://github.com/christiet)**
