@@ -49,6 +49,8 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 			.replace("{favicon}", metadata.favicon || "")
 			.replace("{canonical}", metadata.canonical || "");
 	}
+	// After all the template processing, add a newline
+	str = str + '\n';
 	debug("Processed bookmark string:", str);
 
 	let newStr = encodeURIComponent(str);

@@ -11,7 +11,9 @@
   ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "<all_urls>"
+      ],
       "js": [
         "assets/browser-polyfill.min.js",
         "src/shared/utils.js",
@@ -35,10 +37,6 @@
     "16": "assets/icons/ico_16.png"
   },
   "background": {
-    "scripts": [
-      "assets/browser-polyfill.min.js",
-      "src/shared/utils.js",
-      "src/shared/background.js"
-    ]
+    "service_worker": "src/shared/background.js"
   }
 }

@@ -1,6 +1,24 @@
 // Content script to extract page metadata
 // Runs in page context, no CORS issues
 
+// DIAGNOSTIC: Log immediately when script loads
+debug("Content Script: Script loaded on", window.location.href);
+debug("Content Script: Debug function available");
+
+// DIAGNOSTIC: Test browser API availability
+if (typeof browser === 'undefined') {
+    debug("Content Script: ERROR - browser API not available");
+} else {
+    debug("Content Script: browser API available");
+}
+
+// DIAGNOSTIC: Test runtime availability
+if (!browser.runtime) {
+    debug("Content Script: ERROR - browser.runtime not available");
+} else {
+    debug("Content Script: browser.runtime available");
+}
+
 async function getPageMetadata() {
     debug("Content script: Getting page metadata");
 
@@ -77,22 +95,40 @@ async function getPageMetadata() {
     return metadata;
 }
 
-// Listen for messages from popup
+// DIAGNOSTIC: Enhanced message listener with error handling
 browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
-    debug("Content script: Received message:", request);
+    debug("Content Script: Received message:", request);
 
     if (request.action === "getMetadata") {
         try {
             const metadata = await getPageMetadata();
-            debug("Content script: Sending metadata:", metadata);
+            debug("Content Script: Sending metadata:", metadata);
             return metadata;
         } catch (error) {
-            console.error("Content script: Error getting metadata:", error);
+            debug("Content Script: ERROR getting metadata:", error.message);
+            debug("Content Script: Error stack:", error.stack);
             return {
                 title: document.title,
                 url: window.location.href,
-                description: ""
+                description: "",
+                error: error.message
             };
         }
     }
 });
+
+// DIAGNOSTIC: Test message sending capability
+setTimeout(() => {
+    debug("Content Script: Testing runtime.sendMessage capability...");
+    try {
+        browser.runtime.sendMessage({action: "diagnostic_ping", url: window.location.href})
+            .then(() => {
+                debug("Content Script: Diagnostic ping successful");
+            })
+            .catch((error) => {
+                debug("Content Script: Diagnostic ping failed:", error.message);
+            });
+    } catch (error) {
+        debug("Content Script: Cannot send diagnostic ping:", error.message);
+    }
+}, 1000);
