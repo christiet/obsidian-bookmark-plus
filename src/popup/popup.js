@@ -181,9 +181,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 	} catch (error) {
 		console.error("Failed to get metadata from content script:", error);
 		description = "";
+		document.querySelector("#description").placeholder =
+			"Limited metadata available";
 	}
 
-	document.querySelector("#description").placeholder = "No description...";
+	if (!document.querySelector("#description").value) {
+		document.querySelector("#description").placeholder = "No description...";
+	}
 	document.querySelector("#description").value = description;
 	document.querySelector("#title").value = title;
 	debug("Set form values");
