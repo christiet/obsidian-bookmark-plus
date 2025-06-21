@@ -1,3 +1,9 @@
+// Default constants for maintenance (must match options.js)
+const DEFAULT_VAULT = "Obsidian Vault";
+const DEFAULT_PATHS = "Bookmarks";
+const DEFAULT_TEMPLATE = `\n> [!info] {title} {tags}\n> {description}\n> {url}\n>`;
+const DEFAULT_DEBUG = false;
+
 async function clipPage(url, title, tags, description, vaultPath, metadata) {
 	debug("clipPage called with:", {
 		url,
@@ -7,29 +13,42 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 		vaultPath,
 	});
 
-	const { obp_vault } = await browser.storage.local.get("obp_vault");
+	const { obp_vault, obp_template } = await browser.storage.local.get([
+		"obp_vault",
+		"obp_template",
+	]);
 
-	debug("Retrieved vault name:", obp_vault);
-
-	if (!obp_vault || !vaultPath) {
-		debug(
-			"Missing settings - vault name:",
-			obp_vault,
-			"vault path:",
-			vaultPath
-		);
-		browser.runtime.openOptionsPage();
-		return;
+	// Helper function to double-encode URLs for proper handling through Obsidian URI
+	function doubleEncodeUrl(url) {
+		if (!url) return url;
+		try {
+			return encodeURIComponent(url);
+		} catch (error) {
+			debug("Error double-encoding URL:", url, error);
+			return url; // Return original if encoding fails
+		}
 	}
 
-	const { obp_template } = await browser.storage.local.get("obp_template");
-	debug("Retrieved template:", obp_template);
+	// Double-encode URLs in metadata before template processing
+	if (metadata) {
+		debug("Original metadata URLs:", {
+			"og:image": metadata["og:image"],
+			favicon: metadata.favicon,
+			canonical: metadata.canonical,
+		});
 
-	const defaultTemplate = `\n> [!info] {title} {tags}\n> {description}\n> {url}\n>`;
-	const bookmarkTemplate = obp_template || defaultTemplate;
-	debug("Using template:", bookmarkTemplate);
+		metadata["og:image"] = doubleEncodeUrl(metadata["og:image"]);
+		metadata.favicon = doubleEncodeUrl(metadata.favicon);
+		metadata.canonical = doubleEncodeUrl(metadata.canonical);
 
-	let str = bookmarkTemplate
+		debug("Double-encoded metadata URLs:", {
+			"og:image": metadata["og:image"],
+			favicon: metadata.favicon,
+			canonical: metadata.canonical,
+		});
+	}
+
+	let str = obp_template
 		.replace("{title}", title)
 		.replace("{url}", url)
 		.replace("{description}", description)
@@ -42,7 +61,10 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 			.replace("{keywords}", metadata.keywords || "")
 			.replace("{author}", metadata.author || "")
 			.replace("{og:title}", metadata["og:title"] || metadata.title || "")
-			.replace("{og:description}", metadata["og:description"] || metadata.description || "")
+			.replace(
+				"{og:description}",
+				metadata["og:description"] || metadata.description || ""
+			)
 			.replace("{og:image}", metadata["og:image"] || "")
 			.replace("{og:site_name}", metadata["og:site_name"] || "")
 			.replace("{og:type}", metadata["og:type"] || "")
@@ -50,7 +72,7 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 			.replace("{canonical}", metadata.canonical || "");
 	}
 	// After all the template processing, add a newline
-	str = str + '\n';
+	str = str + "\n";
 	debug("Processed bookmark string:", str);
 
 	let newStr = encodeURIComponent(str);
@@ -143,10 +165,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 	try {
 		// Send message to content script to get metadata
 		const response = await browser.tabs.sendMessage(
-			(await browser.tabs.query({ currentWindow: true, active: true }))[0].id,
+			(
+				await browser.tabs.query({ currentWindow: true, active: true })
+			)[0].id,
 			{ action: "getMetadata" }
 		);
-		
+
 		if (response) {
 			metadata = response;
 			description = response.description || "";
@@ -157,9 +181,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 	} catch (error) {
 		console.error("Failed to get metadata from content script:", error);
 		description = "";
+		document.querySelector("#description").placeholder =
+			"Limited metadata available";
 	}
 
-	document.querySelector("#description").placeholder = "No description...";
+	if (!document.querySelector("#description").value) {
+		document.querySelector("#description").placeholder = "No description...";
+	}
 	document.querySelector("#description").value = description;
 	document.querySelector("#title").value = title;
 	debug("Set form values");
@@ -167,14 +195,23 @@ window.addEventListener("DOMContentLoaded", async () => {
 	debug("Loading document paths...");
 	await loadDocumentPaths();
 
-	// Check settings BEFORE setting up event listeners
+	// Check settings - if ANY are missing, open options (but don't set defaults here)
 	debug("Checking settings...");
 	const { obp_vault } = await browser.storage.local.get("obp_vault");
 	const { obp_paths } = await browser.storage.local.get("obp_paths");
+	const { obp_template } = await browser.storage.local.get("obp_template");
 
-	debug("Settings check - vault name:", obp_vault, "paths:", obp_paths);
+	debug(
+		"Settings check - vault name:",
+		obp_vault,
+		"paths:",
+		obp_paths,
+		"template:",
+		!!obp_template
+	);
 
-	if (!obp_vault || !obp_paths) {
+	// If any critical setting is missing, open options page
+	if (!obp_vault || !obp_paths || !obp_template) {
 		debug("Settings missing! Opening options page...");
 		browser.runtime.openOptionsPage();
 		return; // Exit early, don't set up event listeners
