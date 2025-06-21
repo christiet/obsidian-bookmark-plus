@@ -2,7 +2,7 @@
   "name": "Obsidian Bookmark Plus",
   "description": "Bookmark the current tab into Obsidian.",
   "homepage_url": "https://github.com/christiet/obsidian-bookmark-plus",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "manifest_version": 3,
   "permissions": [
     "storage",
