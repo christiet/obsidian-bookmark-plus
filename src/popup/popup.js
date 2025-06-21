@@ -29,6 +29,36 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 	const bookmarkTemplate = obp_template || defaultTemplate;
 	debug("Using template:", bookmarkTemplate);
 
+	// Helper function to double-encode URLs for proper handling through Obsidian URI
+	function doubleEncodeUrl(url) {
+		if (!url) return url;
+		try {
+			return encodeURIComponent(url);
+		} catch (error) {
+			debug("Error double-encoding URL:", url, error);
+			return url; // Return original if encoding fails
+		}
+	}
+
+	// Double-encode URLs in metadata before template processing
+	if (metadata) {
+		debug("Original metadata URLs:", {
+			"og:image": metadata["og:image"],
+			favicon: metadata.favicon,
+			canonical: metadata.canonical,
+		});
+
+		metadata["og:image"] = doubleEncodeUrl(metadata["og:image"]);
+		metadata.favicon = doubleEncodeUrl(metadata.favicon);
+		metadata.canonical = doubleEncodeUrl(metadata.canonical);
+
+		debug("Double-encoded metadata URLs:", {
+			"og:image": metadata["og:image"],
+			favicon: metadata.favicon,
+			canonical: metadata.canonical,
+		});
+	}
+
 	let str = bookmarkTemplate
 		.replace("{title}", title)
 		.replace("{url}", url)
@@ -42,7 +72,10 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 			.replace("{keywords}", metadata.keywords || "")
 			.replace("{author}", metadata.author || "")
 			.replace("{og:title}", metadata["og:title"] || metadata.title || "")
-			.replace("{og:description}", metadata["og:description"] || metadata.description || "")
+			.replace(
+				"{og:description}",
+				metadata["og:description"] || metadata.description || ""
+			)
 			.replace("{og:image}", metadata["og:image"] || "")
 			.replace("{og:site_name}", metadata["og:site_name"] || "")
 			.replace("{og:type}", metadata["og:type"] || "")
@@ -50,7 +83,7 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 			.replace("{canonical}", metadata.canonical || "");
 	}
 	// After all the template processing, add a newline
-	str = str + '\n';
+	str = str + "\n";
 	debug("Processed bookmark string:", str);
 
 	let newStr = encodeURIComponent(str);
@@ -143,10 +176,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 	try {
 		// Send message to content script to get metadata
 		const response = await browser.tabs.sendMessage(
-			(await browser.tabs.query({ currentWindow: true, active: true }))[0].id,
+			(
+				await browser.tabs.query({ currentWindow: true, active: true })
+			)[0].id,
 			{ action: "getMetadata" }
 		);
-		
+
 		if (response) {
 			metadata = response;
 			description = response.description || "";

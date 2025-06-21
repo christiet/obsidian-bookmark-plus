@@ -80,6 +80,7 @@
 ### Rich Visual Layout (Light Theme)
 ![Rich Visual Layout Light](images/rich_visual_layout_light.png)
 ```html
+
 <div style="display: flex; align-items: flex-start; gap: 8px;">
   <img src="{og:image}" style="width: 100px; object-fit: cover; border-radius: 4px;" />
   <div>
@@ -89,11 +90,13 @@
     <span style="display: inline-block; background: #f0f0f8; color: #7c3aed; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; margin-top: 4px;">{tags}</span>
   </div>
 </div>
+
 ```
 
 ### Rich Visual Layout (Dark Theme)
 ![Rich Visual Layout Dark](images/rich_visual_layout_dark.png)
 ```html
+
 <div style="display: flex; align-items: flex-start; gap: 8px;">
   <img src="{og:image}" style="width: 100px; object-fit: cover; border-radius: 4px;" />
   <div>
