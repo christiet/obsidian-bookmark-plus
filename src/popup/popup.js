@@ -1,3 +1,9 @@
+// Default constants for maintenance (must match options.js)
+const DEFAULT_VAULT = "Obsidian Vault";
+const DEFAULT_PATHS = "Bookmarks";
+const DEFAULT_TEMPLATE = `\n> [!info] {title} {tags}\n> {description}\n> {url}\n>`;
+const DEFAULT_DEBUG = false;
+
 async function clipPage(url, title, tags, description, vaultPath, metadata) {
 	debug("clipPage called with:", {
 		url,
@@ -7,27 +13,10 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 		vaultPath,
 	});
 
-	const { obp_vault } = await browser.storage.local.get("obp_vault");
-
-	debug("Retrieved vault name:", obp_vault);
-
-	if (!obp_vault || !vaultPath) {
-		debug(
-			"Missing settings - vault name:",
-			obp_vault,
-			"vault path:",
-			vaultPath
-		);
-		browser.runtime.openOptionsPage();
-		return;
-	}
-
-	const { obp_template } = await browser.storage.local.get("obp_template");
-	debug("Retrieved template:", obp_template);
-
-	const defaultTemplate = `\n> [!info] {title} {tags}\n> {description}\n> {url}\n>`;
-	const bookmarkTemplate = obp_template || defaultTemplate;
-	debug("Using template:", bookmarkTemplate);
+	const { obp_vault, obp_template } = await browser.storage.local.get([
+		"obp_vault",
+		"obp_template",
+	]);
 
 	// Helper function to double-encode URLs for proper handling through Obsidian URI
 	function doubleEncodeUrl(url) {
@@ -59,7 +48,7 @@ async function clipPage(url, title, tags, description, vaultPath, metadata) {
 		});
 	}
 
-	let str = bookmarkTemplate
+	let str = obp_template
 		.replace("{title}", title)
 		.replace("{url}", url)
 		.replace("{description}", description)
@@ -202,14 +191,23 @@ window.addEventListener("DOMContentLoaded", async () => {
 	debug("Loading document paths...");
 	await loadDocumentPaths();
 
-	// Check settings BEFORE setting up event listeners
+	// Check settings - if ANY are missing, open options (but don't set defaults here)
 	debug("Checking settings...");
 	const { obp_vault } = await browser.storage.local.get("obp_vault");
 	const { obp_paths } = await browser.storage.local.get("obp_paths");
+	const { obp_template } = await browser.storage.local.get("obp_template");
 
-	debug("Settings check - vault name:", obp_vault, "paths:", obp_paths);
+	debug(
+		"Settings check - vault name:",
+		obp_vault,
+		"paths:",
+		obp_paths,
+		"template:",
+		!!obp_template
+	);
 
-	if (!obp_vault || !obp_paths) {
+	// If any critical setting is missing, open options page
+	if (!obp_vault || !obp_paths || !obp_template) {
 		debug("Settings missing! Opening options page...");
 		browser.runtime.openOptionsPage();
 		return; // Exit early, don't set up event listeners

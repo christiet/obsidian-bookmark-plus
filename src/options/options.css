@@ -159,3 +159,26 @@ input:checked + .slider:before {
 .debug-section label:first-child {
 	margin-bottom: 0;
 }
+
+.save-message {
+	position: fixed;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #10b981;
+	color: white;
+	padding: 12px 24px;
+	border-radius: 8px;
+	font-weight: 500;
+	font-size: 14px;
+	box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.3s ease;
+	z-index: 1000;
+}
+
+.save-message.show {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+}
